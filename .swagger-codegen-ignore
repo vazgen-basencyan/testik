@@ -1,0 +1,12 @@
+.travis.yml
+.gitignore
+test-requirements.txt
+requirements.txt
+tox.ini
+git_push.sh
+README.md
+setup.py
+test
+.swagger-codegen/
+test/
+docs/

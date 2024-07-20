@@ -1,0 +1,540 @@
+##################################################################################################
+#                                     Forgot Password Request Details                            #
+##################################################################################################
+ForgotPasswordRequestBody:
+  type: object
+  required:
+    - userId
+  properties:
+    userId:
+      type: string
+    passwordCode:
+      type: string
+    newPassword:
+      type: string
+
+##################################################################################################
+#                                    Login Request Details                                       #
+##################################################################################################
+LoginRequestBody:
+  type: object
+  properties:
+    userId:
+      type: string
+    password:
+      type: string
+    provider:
+      type: string
+    providerInfo:
+      type: object
+    state:
+      $ref: "#/AuthProviderState"
+    userName:
+      type: string
+    email:
+      type: string
+    phone:
+      type: string
+    language:
+      type: string
+
+AuthProviderState:
+  type: object
+  required:
+    - provider
+    - id
+    - clientObjectId
+    - timestamp
+  properties:
+    provider:
+      type: string
+    id:
+      type: string
+    clientObjectId:
+      type: string
+    timestamp:
+      type: integer
+
+##################################################################################################
+#                                     Create Property Request Details                            #
+##################################################################################################
+CreatePropertyRequestBody:
+  type: object
+  properties:
+    objectId:
+      type: string
+    syntaxOnly:
+      type: boolean
+    service:
+      $ref: "#/ServiceObject"
+    propertyId:
+      $ref: "#/PropertyId"
+    property:
+      $ref: "#/PropertyData"
+    options:
+      type: string
+
+##################################################################################################
+#                                     Tags Request Details                            #
+##################################################################################################
+TagsRequestBody:
+  type: object
+  properties:
+    objects:
+      type: array
+      description: Array of objects with their identifiers and instances
+      items:
+        type: object
+        properties:
+          objectId:
+            type: string
+            description: Unique identifier for the object
+          instanceId:
+            type: integer
+            description: Instance identifier of the object
+    tags:
+      type: array
+      description: Array of tags associated with the property
+      items:
+        type: string
+##################################################################################################
+#                                     Tag Definition Request Details                            #
+##################################################################################################
+TagDefinitionsRequestBody:
+  type: object
+  properties:
+    clientObjectId:
+      type: string
+      description: Unique identifier for the object
+    tagDefinitions:
+      type: array
+      description: Array of tags associated with the property
+      items:
+        type: string
+
+
+PropertyData:
+  type: object
+  properties:
+    object:
+      $ref: "#/ObjectInfo"
+    permissions:
+      type: array
+      items:
+        type: string
+    rootSettings:
+      $ref: "#/RootSettings"
+    sources:
+      $ref: "#/PropertySources"
+    objects:
+      type: object
+    historicTree:
+      type: object
+    activeTree:
+      type: object
+
+ServiceObject:
+  type: object
+  properties:
+    name:
+      type: string
+    key:
+      type: string
+    type:
+      $ref: "#/NodeId"
+    mode:
+      $ref: "#/ModeType"
+    include:
+      type: array
+      items:
+        $ref: "#/ServiceIncludeData"
+    exclude:
+      type: array
+      items:
+        type: string
+    parameters:
+      $ref: "#/SourceParameters"
+    cost_estimation:
+      $ref: "#/CostEstimation"
+
+ServiceIncludeData:
+  type: object
+  properties:
+    signing:
+      type: boolean
+    index:
+      type: boolean
+    path:
+      type: string
+
+ServicesInfo:
+  type: object
+  properties:
+    actions:
+      type: object
+    estimation:
+      $ref: '#/ServicesInfoEstimations'
+    include:
+      type: array
+      items:
+        $ref: "#/IncludeObjectInfo"
+    key:
+      type: string
+    name:
+      type: string
+    type:
+      $ref: "#/NodeId"
+    mode:
+      $ref: "#/ModeType"
+    parameters:
+      $ref: "#/SourceParameters"
+
+ServicesInfoEstimations:
+  type: object
+  properties:
+    accessCost:
+      type: integer
+    accessDelay:
+      type: integer
+    accessRate:
+      type: integer
+    storeCost:
+      type: integer
+
+IncludeObjectInfo:
+  type: object
+  properties:
+    index:
+      type: boolean
+    signing:
+      type: boolean
+    path:
+      type: string
+
+PropertyId:
+  type: string
+  enum:
+    - PID_POLICY
+    - PID_TASK_STATUS
+    - PID_MEMBERS
+    - PID_TRUSTEES
+
+ObjectInfo:
+  type: object
+  properties:
+    objectId:
+      type: string
+    parentId:
+      type: string
+    classId:
+      type: string
+    name:
+      type: string
+    uniqueName:
+      type: string
+    flags:
+      type: integer
+    tags:
+      type: array
+      items:
+        type: string
+    isContainer:
+      type: boolean
+    isActivated:
+      type: boolean
+    isOnline:
+      type: boolean
+    isReadyToWork:
+      type: boolean
+
+RootSettings:
+  type: object
+  properties:
+    values:
+      $ref: '#/RootSettingsValues'
+    inherited:
+      type: boolean
+      description: Whether the property is inherited.
+    inheritedValues:
+      $ref: '#/RootSettingsValues'
+    inheritedFrom:
+      $ref: '#/InheritedFrom'
+
+RootSettingsValues:
+  type: object
+  properties:
+    enableUpdates:
+      type: boolean
+      description: Whether updates are enabled.
+    updateSlot:
+      type: string
+      description: The update slot.
+    updatePath:
+      type: string
+      description: The update path.
+    updatePublicKeyPath:
+      type: string
+      description: The update public key path
+
+InheritedFrom:
+  type: object
+  properties:
+    objectId:
+      type: string
+      description: Object ID from which the property is inherited.
+    parentId:
+      type: string
+      description: Parent ID from which the property is inherited.
+    classId:
+      type: string
+      description: Class ID of the inherited property.
+    name:
+      type: string
+      description: Name of the inherited property.
+    uniqueName:
+      type: string
+      description: Unique name of the inherited property.
+    flags:
+      type: integer
+      description: Flags for the inherited property.
+    tags:
+      type: object
+      description: Tags for the inherited property.
+    createdAt:
+      type: integer
+      description: Creation timestamp.
+    updatedAt:
+      type: integer
+      description: Update timestamp.
+    permissions:
+      type: array
+      items:
+        type: string
+      description: Permissions for the inherited property.
+    isContainer:
+      type: boolean
+      description: Whether the inherited property is a container.
+    isOnline:
+      type: boolean
+      description: Whether the inherited property is online.
+    isActivated:
+      type: boolean
+      description: Whether the inherited property is activated.
+    isReadyToWork:
+      type: boolean
+      description: Whether the inherited property is ready to work.
+
+PropertySources:
+  type: object
+  properties:
+    values:
+      $ref: "#/PropertySourcesValues"
+
+PropertySourcesValues:
+  type: object
+  properties:
+    services:
+      type: array
+      items:
+        $ref: "#/ServicesInfo"
+
+NodeId:
+  type: string
+  enum:
+    - appagt
+    - group
+    - user
+
+ModeType:
+  type: string
+  enum:
+    - Source
+    - Target
+
+SourceParameters:
+  type: object
+  properties:
+    excludeEnableGlobal:
+      type: boolean
+      description: Actual for file system source
+    excludeExternalDrives:
+      type: boolean
+      description: Actual for file system source
+    format:
+      type: string
+      default: native
+      description: Actual for all sources
+    url:
+      type: string
+    server:
+      type: string
+    name:
+      type: string
+    username:
+      type: string
+    password:
+      type: string
+    tenant:
+      type: string
+    clientId:
+      type: string
+    clientSecret:
+      type: string
+    region:
+      type: string
+    auth:
+      type: string
+    secureParameters:
+      $ref: "#/SecureParameters"
+    accessKey:
+      type: string
+    secretKey:
+      type: string
+
+SecureParameters:
+  type: object
+  properties:
+    readonly:
+      type: array
+      items:
+        type: string
+    secure:
+      type: array
+      items:
+        type: string
+    token:
+      type: string
+
+CostEstimation:
+  type: object
+  properties:
+    accessCost:
+      type: integer
+      default: 0
+    accessDelay:
+      type: integer
+      default: 0
+    accessRate:
+      type: integer
+      default: 0
+    storeCost:
+      type: integer
+      default: 0
+
+PropertyOptions:
+  type: object
+  properties:
+    physicalOnly:
+      type: boolean
+    infoLevel:
+      type: string
+      default: full
+    effective:
+      type: boolean
+    lineNumber:
+      type: number
+    consoleCommand:
+      type: string
+    messages:
+      type: boolean
+    security:
+      type: boolean
+    getObjects:
+      type: boolean
+    getHistoricTree:
+      type: boolean
+    getActiveTree:
+      type: boolean
+    getWorkers:
+      type: boolean
+    nodeIdFilter:
+      type: array
+      items:
+        type: string
+    age:
+      type: number
+    getPending:
+      type: boolean
+    getPostponed:
+      type: boolean
+    getSolved:
+      type: boolean
+    getPolicies:
+      type: boolean
+    getAllPolicies:
+      type: boolean
+    getRules:
+      type: boolean
+    getPolicyId:
+      type: string
+
+
+##################################################################################################
+#                                     Create Search Request Details                            #
+##################################################################################################
+CreateSearchRequest:
+  type: object
+  properties:
+    select:
+      type: string
+
+##################################################################################################
+#                                     Activate Object Details                                   #
+##################################################################################################
+ActivateObject:
+  type: object
+  required: activationCode
+  properties:
+    activationCode:
+      type: string
+    parentId:
+      type: string
+
+##################################################################################################
+#                                     Control Command Request Details                            #
+##################################################################################################
+ControlCommandRequestBody:
+  type: object
+  properties:
+    commandId:
+      $ref: "#/CommandId"
+    objectId:
+      type: string
+
+CommandId:
+  type: string
+  enum:
+    - queue.scan
+
+##################################################################################################
+#                                     Create Object Request Body Details                         #
+##################################################################################################
+CreateObjectRequestBody:
+  type: object
+  required:
+    - object
+  properties:
+    object:
+      $ref: "#/Object"
+    options:
+      type: object
+      items:
+        $ref: "#/LoginRequestBody"
+
+Object:
+  type: object
+  required:
+    - name
+    - classId
+    - parentId
+  properties:
+    parentId:
+      type: string
+    name:
+      type: string
+    classId:
+      type: string
+    tags:
+      type: object
+    properties:
+      type: object

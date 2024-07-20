@@ -1,0 +1,500 @@
+swagger: "2.0"
+info:
+  version: 2.7.1-7532
+  title: aparavi
+  description: Aparavi REST API Documentation
+tags:
+  - name: private
+    description: Private endpoint
+  - name: public
+    description: Public endpoint
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+schemes:
+  - https
+security:
+  - ApiKeyAuth: []
+
+paths:
+  ##################################################################################################
+  #                                     Private Apis                                               #
+  ##################################################################################################
+
+  /database/property:
+    get:
+      tags:
+        - private
+      summary: Get property
+      parameters:
+        - in: query
+          name: objectId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: propertyId
+          required: true
+          schema:
+            $ref: "./api_details.yaml#/PropertyId"
+        - in: query
+          name: options
+          schema:
+            $ref: "./api_details.yaml#/PropertyOptions"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to
+            see if call failed.
+          schema:
+            type: object
+
+    post:
+      tags:
+        - private
+      summary: Create Property
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: create_property_body
+          description: Creating property
+          schema:
+            $ref: "./api_details.yaml#/CreatePropertyRequestBody"
+      responses:
+        default:
+          description: Returned the created Property
+          schema:
+            type: object
+
+  ##################################################################################################
+  #                                     Object Api details                                         #
+  ##################################################################################################
+
+  /database/object:
+    get:
+      tags:
+        - private
+      summary: Getting the object
+      parameters:
+        - name: objectId
+          in: query
+          description: The object id
+          required: true
+          type: string
+        - name: options
+          in: query
+          description: The options
+          type: string
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+    post:
+      tags:
+        - private
+      summary: Create object
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: create_object_body
+          description: Creating the object
+          schema:
+            $ref: "./api_details.yaml#/CreateObjectRequestBody"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+    delete:
+      tags:
+        - private
+      summary: Delete object
+      consumes:
+        - application/json
+      parameters:
+        - in: query
+          name: objectId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: options
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  ##################################################################################################
+  #                                     Search Api details                                         #
+  ##################################################################################################
+
+  /database/search:
+    post:
+      tags:
+        - private
+      summary: Creating search object
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: create_search_body
+          description: Creating search object
+          schema:
+            $ref: "./api_details.yaml#/CreateSearchRequest"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+    get:
+      tags:
+        - private
+      parameters:
+        - name: searchId
+          in: query
+          description: The search object id
+          required: true
+          type: string
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  ##################################################################################################
+  #                                     Detabase Api details                                       #
+  ##################################################################################################
+
+  /database/activate:
+    post:
+      tags:
+        - private
+      summary: Activate Object
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: activate_object_body
+          description: Activating object
+          schema:
+            $ref: "./api_details.yaml#/ActivateObject"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /services/validate:
+    put:
+      tags:
+        - private
+      summary: Activate Object
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: validate_service_body
+          description: Validating services
+          schema:
+            $ref: "./api_details.yaml#/CreatePropertyRequestBody"
+      responses:
+        default:
+          description: API call completed. Getting the validation results.
+          schema:
+            type: object
+
+  /database/control:
+    put:
+      tags:
+        - private
+      summary: Control command
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: control_command_request
+          description: Updating the command
+          schema:
+            $ref: "./api_details.yaml#/ControlCommandRequestBody"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /database/children:
+    get:
+      tags:
+        - private
+      parameters:
+        - name: parentId
+          in: query
+          description: The parent object id
+          required: true
+          type: string
+        - name: options
+          in: query
+          description: The options
+          type: string
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+  ##################################################################################################
+  #                                     Update Request Details                            #
+  ##################################################################################################
+  /update:
+    get:
+      tags:
+        - private
+      responses:
+        default:
+          description:  Return Common Status
+          schema:
+            type: object
+  ##################################################################################################
+  #                                     Tags Request Details                            #
+  ##################################################################################################
+  /tags:
+    post:
+      tags:
+        - private
+      summary: Create Tag
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: post_tags_body
+          description: Creating tag
+          schema:
+            $ref: "./api_details.yaml#/TagsRequestBody"
+      responses:
+        default:
+          description:  Return Tag details
+          schema:
+            type: object
+    delete:
+      tags:
+        - private
+      summary: Delete Tag
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: delete_tags_body
+          description: Deleting tag
+          schema:
+            $ref: "./api_details.yaml#/TagsRequestBody"
+      responses:
+        default:
+          description: Return Tag details
+          schema:
+            type: object
+  ##################################################################################################
+  #                                     Tag Definition Request Details                            #
+  ##################################################################################################
+  /tagDefinitions:
+    post:
+      tags:
+        - private
+      summary: Create Tag definition
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: post_tag_definition_body
+          description: Creating tag definition
+          schema:
+            $ref: "./api_details.yaml#/TagDefinitionsRequestBody"
+      responses:
+        default:
+          description: Return Tag Definition details
+          schema:
+            type: object
+    delete:
+      tags:
+        - private
+      summary: Delete Tag definitions
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: delete_tag_definition_body
+          description: Deleting Tag definition
+          schema:
+            $ref: "./api_details.yaml#/TagDefinitionsRequestBody"
+      responses:
+        default:
+          description:  Return Tag definition
+          schema:
+            type: object
+##################################################################################################
+#                                     Public Apis                                                #
+##################################################################################################
+
+  /auth:
+    get:
+      tags:
+        - public
+      summary: Authentication Services
+      description: Get authentication details for a user.
+      parameters:
+        - name: command
+          in: query
+          description: The command parameter.
+          required: true
+          type: string
+        - name: activationCode
+          in: query
+          description: The activationCode parameter.
+          type: string
+        - name: clientObjectId
+          in: query
+          description: The clientObjectId parameter.
+          type: string
+        - name: userObjectId
+          in: query
+          description: The userObjectId parameter.
+          type: string
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /login:
+    post:
+      tags:
+        - public
+      summary: Log in user
+      description:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: login_data
+          description: Users login and password.
+          schema:
+            $ref: "./api_details.yaml#/LoginRequestBody"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to
+            see if call failed.
+          schema:
+            type: object
+
+  /changelog:
+    get:
+      tags:
+        - public
+      summary: Get change log
+      description:
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /config:
+    get:
+      tags:
+        - public
+      summary: Get server configuration
+      description:
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /docs:
+    get:
+      tags:
+        - public
+      summary: Get api documentation
+      description:
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /metrics:
+    get:
+      tags:
+        - public
+      summary: Get metrics
+      description:
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /events/listen:
+    get:
+      tags:
+        - public
+      summary: Get events
+      description:
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /database/forgotPassword:
+    post:
+      tags:
+        - public
+      summary: Forgot Password
+      description:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: forgot_password_data
+          description:
+          schema:
+            $ref: "./api_details.yaml#/ForgotPasswordRequestBody"
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
+
+  /database/forgotUserId:
+    post:
+      tags:
+        - public
+      summary: Forgot User Id
+      description:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: forgot_user_id_data
+          description:
+          schema:
+            type: object
+            required:
+              - phoneOrEmail
+            properties:
+              phoneOrEmail: string
+      responses:
+        default:
+          description: API call completed. Check status string in returned object to see if call failed.
+          schema:
+            type: object
